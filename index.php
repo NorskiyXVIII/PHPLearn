@@ -1,24 +1,24 @@
 <?php
-	// реализуем мини игру, с помощью массивов и рандома
+	// Улучшаем игру.
+	/* 
+	Теперь вывод от скольки до скольки(диапозон чисел, в который входит рандомное число) чисел не фиксирован
+	и подстраивается под рандомное число.
+	если число делится без остатка на ход(диапозон), то будет писатся от рандомное число до рандомное число, выглядит вот так:
+	ход диапозона(10) (т.е если ранд числ = 8, то он будет в диапозоне от 0 до 10) (ранд числ = 43 диапозон: от 40 до 50)
+	если число = 30, ход = 10, то диапозон будет от 30 до 30
+	*/
 
-	$gameStat = ["name" => "RandomGame", "minNum" => 10, "maxNum" => 50, "canPlay" => true];
+	$gameStat = ["name" => "RandomGame", "minNum" => 0, "maxNum" => 100, "step" => 10, "canPlay" => true];
 		$num = rand($gameStat["minNum"], $gameStat["maxNum"]);
-	
+		$numDiaposonMin = $num;
+		$numDiaposonMax = $num;
+
 	if (isset($gameStat["canPlay"]) && $gameStat["canPlay"]) {
-		switch ($num) {
-			case $num <= 20:
-				echo "Переменная \$num в промежутке от {$gameStat["minNum"]} до 20.<br>";
-				break;
-			case $num >= 20 && $num <= 30:
-				echo "Переменная \$num в промежутке от 20 до 30.<br>";
-				break;
-			case $num >= 30 && $num <= 40:
-				echo "Переменная \$num в промежутке от 30 до 40.<br>";
-				break;
-			case $num >= 40 && $num <= 50:
-				echo "Переменная \$num в промежутке от 40 до 50.<br>";
-				break;
+		if (!($num % $gameStat["step"] == 0)) {
+			$numDiaposonMin -= $numDiaposonMin % $gameStat["step"];
+			$numDiaposonMax += $gameStat["step"] - ($numDiaposonMax % $gameStat["step"]);
 		}
+		echo "Переменная \$num в промежутке от $numDiaposonMin до $numDiaposonMax.<br>";
 		echo "Рандомное число равно: $num.<br>";
 	} else if (empty($gameStat["canPlay"])) {
 		echo "Игра не может работать! Аргумент не разрешает играть.<br>";
